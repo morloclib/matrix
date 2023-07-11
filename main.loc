@@ -1,0 +1,91 @@
+module matrix (*)
+
+source Cpp from "src/eigen/core.hpp"
+  ( "mlc_transpose" as transpose
+  , "mlc_identity" as identity
+  , "mlc_col" as col
+  , "mlc_row" as row
+  , "mlc_block" as block
+  , "mlc_cell" as cell
+  , "mlc_shape" as shape
+  , "mlc_ncol" as ncol
+  , "mlc_nrow" as nrow
+  , "mlc_mmul" as mmul
+  , "mlc_madd" as madd
+  , "mlc_smul" as smul
+  , "mlc_sadd" as sadd
+  , "mlc_col2list" as col2list
+  , "mlc_row2list" as row2list
+  -- serialization functions
+  -- row and col types are serialized in the same was as matrices
+  , "mlc_packMatrix" as packMatrix
+  , "mlc_unpackMatrix" as unpackMatrix
+  , "mlc_packMatrix" as packRow
+  , "mlc_unpackMatrix" as unpackRow
+  , "mlc_packMatrix" as packCol
+  , "mlc_unpackMatrix" as unpackCol
+  )
+
+import conventions (Real, Int, List, Tuple2)
+
+type Cpp (Matrix a) = "Eigen::Matrix<$1,Eigen::Dynamic,Eigen::Dynamic>" a
+type Cpp (Col a) = "Eigen::Matrix<$1,Eigen::Dynamic,1>" a
+type Cpp (Row a) = "Eigen::Matrix<$1,1,Eigen::Dynamic>" a
+
+identity :: Int -> Matrix Real
+
+transpose :: Matrix a -> Matrix a
+
+col :: Int -> Matrix a -> Col a
+
+row :: Int -> Matrix a -> Row a
+
+block :: row:Int
+      -> col:Int
+      -> nrows:Int
+      -> ncols:Int
+      -> Matrix a
+      -> Matrix a
+
+cell :: Int -> Int -> Matrix a -> a
+
+shape :: Matrix a -> (Int, Int)
+
+ncol :: Matrix a -> Int
+
+nrow :: Matrix a -> Int
+
+mmul :: Matrix a -> Matrix a -> Matrix a
+
+madd :: Matrix a -> Matrix a -> Matrix a
+
+smul :: a -> Matrix a -> Matrix a
+
+sadd :: a -> Matrix a -> Matrix a
+
+col2list :: Col a -> List a
+
+row2list :: Row a -> List a
+
+
+
+------------------------------------------------------------------------
+-- Serialization functions
+
+packMatrix   :: pack   => [[a]] -> Matrix a
+unpackMatrix :: unpack => Matrix a -> [[a]]
+
+packCol   :: pack   => [a] -> Col a
+unpackCol :: unpack => Col a -> [a]
+
+packRow   :: pack   => [a] -> Row a
+unpackRow :: unpack => Row a -> [a]
+
+packMatrix   Cpp :: pack   => [[a]] -> "Eigen::Matrix<$1,Eigen::Dynamic,Eigen::Dynamic>" a
+unpackMatrix Cpp :: unpack => "Eigen::Matrix<$1,Eigen::Dynamic,Eigen::Dynamic>" -> [[a]]
+
+packCol   Cpp :: pack   => [[a]] -> "Eigen::Matrix<$1,Eigen::Dynamic,1>" a
+unpackCol Cpp :: unpack => "Eigen::Matrix<$1,Eigen::Dynamic,1>" a -> [[a]]
+
+packRow   Cpp :: pack   => [[a]] -> "Eigen::Matrix<$1,1,Eigen::Dynamic>" a
+unpackRow Cpp :: unpack => "Eigen::Matrix<$1,1,Eigen::Dynamic>" a -> [[a]]
