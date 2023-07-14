@@ -1,7 +1,11 @@
+#ifndef __MORLOC_MATRIX_EIGEN_CORE_HPP__
+#define __MORLOC_MATRIX_EIGEN_CORE_HPP__
+
 #include "Eigen/Dense"
 
 #include <utility>
 #include <vector>
+#include <functional>
 
 template <typename T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> mlc_packMatrix(const std::vector<std::vector<T>>& xss) {
@@ -32,7 +36,21 @@ std::vector<std::vector<T>> mlc_unpackMatrix(const Eigen::Matrix<T, Eigen::Dynam
     return xss;
 }
 
+// selfcmp :: f:(a -> a -> b) -> xs:[a] -> Matrix b
+template <typename A, typename B>
+Eigen::Matrix<B, Eigen::Dynamic, Eigen::Dynamic> mlc_selfcmp(std::function<B(A,A)> f, std::vector<A> xs){
+    int size = xs.size();
 
+    Eigen::Matrix<B, Eigen::Dynamic, Eigen::Dynamic> mat(size, size);
+
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            mat(i, j) = f(xs[i], xs[j]);
+        }
+    }
+
+    return mat;
+}
 
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> mlc_identity(int n) {
     return Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>::Identity(n, n);
@@ -113,3 +131,5 @@ template <typename T>
 std::vector<T> mlc_row2list(const Eigen::Matrix<T, 1, Eigen::Dynamic>& row) {
     return std::vector<T>(row.data(), row.data() + row.size());
 }
+
+#endif
