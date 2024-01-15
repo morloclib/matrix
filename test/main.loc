@@ -1,5 +1,5 @@
 module m (foo)
 
-import matrix (identity, block)
+import matrix (identity, block, smul)
 
-foo = block 0 0 2 2 . identity
+foo = block 0 0 2 2 . smul 4.2 . identity

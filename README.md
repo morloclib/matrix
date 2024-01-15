@@ -8,3 +8,13 @@ added even more easily using native matrix types.
 
 The `Matrix` general type is currently not parameterized over dimension. It
 takes a single parameter, the stored value type. For example `Matrix Real`.
+
+## Dependencies
+
+For C++ code, currently the `eigen` package is required. `Eigen` may be
+downloaded into the `$MORLOC_HOME/include/` folder. It is available as a
+header-only library. Just install with:
+
+```
+git clone https://gitlab.com/libeigen/eigen.git
+```
