@@ -1,5 +1,7 @@
 module matrix (*)
 
+import types (Real, Int, List, Tuple2)
+
 source Cpp from "eigen/core.hpp"
   ( "mlc_selfcmp" as selfcmp
   , "mlc_transpose" as transpose
@@ -26,8 +28,6 @@ source Cpp from "eigen/core.hpp"
   , "mlc_packMatrix" as packCol
   , "mlc_unpackMatrix" as unpackCol
   )
-
-import conventions (Real, Int, List, Tuple2)
 
 type Cpp => (Matrix a) = "Eigen::Matrix<$1,Eigen::Dynamic,Eigen::Dynamic>" a
 type Cpp => (Col a) = "Eigen::Matrix<$1,Eigen::Dynamic,1>" a
