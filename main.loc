@@ -19,14 +19,6 @@ source Cpp from "eigen/core.hpp"
   , "mlc_sadd" as sadd
   , "mlc_col2list" as col2list
   , "mlc_row2list" as row2list
-  -- serialization functions
-  -- row and col types are serialized in the same was as matrices
-  , "mlc_packMatrix" as packMatrix
-  , "mlc_unpackMatrix" as unpackMatrix
-  , "mlc_packMatrix" as packRow
-  , "mlc_unpackMatrix" as unpackRow
-  , "mlc_packMatrix" as packCol
-  , "mlc_unpackMatrix" as unpackCol
   )
 
 type Cpp => (Matrix a) = "Eigen::Matrix<$1,Eigen::Dynamic,Eigen::Dynamic>" a
@@ -77,15 +69,23 @@ col2list :: Col a -> [a]
 row2list :: Row a -> [a]
 
 
-
 ------------------------------------------------------------------------
 -- Serialization functions
 
-packMatrix   :: pack   => [[a]] -> Matrix a
-unpackMatrix :: unpack => Matrix a -> [[a]]
+instance Packable [[a]] (Matrix a) where
+  source Cpp from "eigen/core.hpp"
+    ( "mlc_packMatrix" as pack
+    , "mlc_unpackMatrix" as unpack
+    )
 
-packCol   :: pack   => [a] -> Col a
-unpackCol :: unpack => Col a -> [a]
+instance Packable [a] (Col a) where
+  source Cpp from "eigen/core.hpp"
+    ( "mlc_packMatrix" as pack
+    , "mlc_unpackMatrix" as unpack
+    )
 
-packRow   :: pack   => [a] -> Row a
-unpackRow :: unpack => Row a -> [a]
+instance Packable [a] (Row a) where
+  source Cpp from "eigen/core.hpp"
+    ( "mlc_packMatrix" as pack
+    , "mlc_unpackMatrix" as unpack
+    )
