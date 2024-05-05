@@ -26,20 +26,20 @@ type Cpp => (Col a) = "Eigen::Matrix<$1,Eigen::Dynamic,1>" a
 type Cpp => (Row a) = "Eigen::Matrix<$1,1,Eigen::Dynamic>" a
 
 -- create a square matrix where mat[i,j] = f(xs[i], xs[j])
-selfcmp :: f:(a -> a -> b) -> xs:([a]) -> Matrix b
+selfcmp a b :: f:(a -> a -> b) -> xs:([a]) -> Matrix b
 
 -- Create a m-by-n matrix where mat[i,j] = k
-fill :: k:a -> m:Int -> n:Int -> Matrix a
+fill a :: k:a -> m:Int -> n:Int -> Matrix a
 
 -- Create an identity matrix of the given size
 identity :: Int -> Matrix Real
 
 
-transpose :: Matrix a -> Matrix a
+transpose a :: Matrix a -> Matrix a
 
-col :: Int -> Matrix a -> Col a
+col a :: Int -> Matrix a -> Col a
 
-row :: Int -> Matrix a -> Row a
+row a :: Int -> Matrix a -> Row a
 
 block :: row:Int
       -> col:Int
@@ -48,25 +48,25 @@ block :: row:Int
       -> Matrix a
       -> Matrix a
 
-cell :: Int -> Int -> Matrix a -> a
+cell a :: Int -> Int -> Matrix a -> a
 
-shape :: Matrix a -> (Int, Int)
+shape a :: Matrix a -> (Int, Int)
 
-ncol :: Matrix a -> Int
+ncol a :: Matrix a -> Int
 
-nrow :: Matrix a -> Int
+nrow a :: Matrix a -> Int
 
-mmul :: Matrix a -> Matrix a -> Matrix a
+mmul a :: Matrix a -> Matrix a -> Matrix a
 
-madd :: Matrix a -> Matrix a -> Matrix a
+madd a :: Matrix a -> Matrix a -> Matrix a
 
-smul :: a -> Matrix a -> Matrix a
+smul a :: a -> Matrix a -> Matrix a
 
-sadd :: a -> Matrix a -> Matrix a
+sadd a :: a -> Matrix a -> Matrix a
 
-col2list :: Col a -> [a]
+col2list a :: Col a -> [a]
 
-row2list :: Row a -> [a]
+row2list a :: Row a -> [a]
 
 
 ------------------------------------------------------------------------
